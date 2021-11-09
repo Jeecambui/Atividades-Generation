@@ -16,6 +16,6 @@ public class IntroduçãoAlgoritmos2 {
 		mes = (total % 365) / 30;
 		dia = (total % 365) % 30;
 		
-		System.out.println("\nVoce viveu: "+ano+ " anos, "+mes+" mes e "+dia+" dia de vida!!!");
+		System.out.println("\nVoce vive: "+ano+ " anos, "+mes+" mes e "+dia+" dias");
 		}
 	}	
