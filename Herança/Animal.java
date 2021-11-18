@@ -1,18 +1,14 @@
 package Polimorfismo;
 
-public abstract class Animal {
+public class Animal {
 	private String nome;
 	private int idade;
-	private String tipoSom;
-	private boolean corre;
-	private boolean subir;
-
-	public Animal(String nome, int idade, String tipoSom, boolean corre, boolean subir) {
+	private String som;
+	
+	public Animal(String nome, int idade, String som) {
 		this.nome = nome;
 		this.idade = idade;
-		this.tipoSom = tipoSom;
-		this.corre = corre;
-		this.subir = subir;
+		this.som = som;
 	}
 
 	public String getNome() {
@@ -31,29 +27,12 @@ public abstract class Animal {
 		this.idade = idade;
 	}
 
-	public String getTipoSom() {
-		return tipoSom;
+	public String getSom() {
+		return som;
 	}
 
-	public void setTipoSom(String tipoSom) {
-		this.tipoSom = tipoSom;
+	public void setSom(String som) {
+		this.som = som;
 	}
-
-	public boolean isCorre() {
-		return corre;
-	}
-
-	public void setCorre(boolean corre) {
-		this.corre = corre;
-	}
-
-	public boolean isSubir() {
-		return subir;
-	}
-
-	public void setSubir(boolean subir) {
-		this.subir = subir;
-	}
-
-
+	
 }
