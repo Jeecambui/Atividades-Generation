@@ -25,10 +25,11 @@ public class CategoriaModel {
 	@NotNull(message="Por favor escreva o tipo")
 	@Size (min = 1 , max = 10)
 	private String tipo;
-	
+		
 	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL) // 1 pra N
 	@JsonIgnoreProperties("categoria")
-	private List<Produto> produto;
+	private List<ProdutoModel> produto;
+	
 
 	public long getId() {
 		return id;
@@ -46,11 +47,11 @@ public class CategoriaModel {
 		this.tipo = tipo;
 	}
 
-	public List<Produto> getProduto() {
+	public List<ProdutoModel> getProduto() {
 		return produto;
 	}
 
-	public void setProduto(List<Produto> produto) {
+	public void setProduto(List<ProdutoModel> produto) {
 		this.produto = produto;
 	}	
 

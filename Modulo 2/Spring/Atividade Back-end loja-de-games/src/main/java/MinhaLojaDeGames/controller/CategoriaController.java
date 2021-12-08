@@ -17,46 +17,58 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import MinhaLojaDeGames.model.CategoriaModel;
+import MinhaLojaDeGames.model.ProdutoModel;
+import MinhaLojaDeGames.repository.CategoriaRepository;
+import MinhaLojaDeGames.repository.ProdutoRepository;
+
 @RestController
 @RequestMapping("/categoria")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CategoriaController {
 	
 	@Autowired
-	private categoriaRepository CategoriaRepository;
+	private CategoriaRepository categoriaRepository;
 
 	@GetMapping
-	public ResponseEntity<List<Categoria>> getAll() {
+	public ResponseEntity<List<CategoriaModel>> getAll() {
 		return ResponseEntity.ok(categoriaRepository.findAll());
 
 		// select * from tb_categoria;
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Categoria> getById(@PathVariable Long id) {
-		return categoriaRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
+	public ResponseEntity<CategoriaModel> getById(@PathVariable long id) {
+		return categoriaRepository.findById(id)
+				.map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.notFound().build());
 
 		// select * from tb_postagens where id = id;
 	}
-
+	
 	@GetMapping("/tipo/{tipo}")
-	public ResponseEntity<List<Categoria>> getAllTitulo(@PathVariable String tipo) {
+	public ResponseEntity<List<CategoriaModel>> getByTipo(@PathVariable String tipo) {
 		return ResponseEntity.ok(categoriaRepository.findAllByTipoContainingIgnoreCase(tipo));
 
-		// select * from tb_categoria where titulo like "%titulo%";
+		// select * from tb_categoria where tipo like "%tipo%";
 	}
 	
+	@GetMapping("/descricao/{descricao}")
+	public ResponseEntity<List<ProdutoModel>> getByDescricao(@PathVariable String descricao) {
+		return ResponseEntity.ok(ProdutoRepository.findAllByNomeContainingIgnoreCase(descricao));
+
+		// select * from tb_descricao where descricao like "%descricao%"
+	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> postCategoria(@Valid @RequestBody Categoria categoria) {
+	public ResponseEntity<CategoriaModel> postCategoria(@Valid @RequestBody CategoriaModel categoria) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaRepository.save(categoria));
 	}
 
 	@PutMapping
-	public ResponseEntity<Categoria> putCategoria(@Valid @RequestBody Categoria categoria) // update do MySQL
+	public ResponseEntity<CategoriaModel> putCategoria(@Valid @RequestBody CategoriaModel categoria) // update do MySQL
 	{
-		return categoriaRepository.findById(postagem.getId())
+		return categoriaRepository.findById(categoria.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(categoriaRepository.save(categoria)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
