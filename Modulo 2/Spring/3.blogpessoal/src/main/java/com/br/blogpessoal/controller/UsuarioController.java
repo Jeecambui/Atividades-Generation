@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.br.blogpessoal.model.Usuario;
 import com.br.blogpessoal.model.UsuarioLogin;
+import com.br.blogpessoal.repository.UsuarioRepository;
+import com.br.blogpessoal.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -38,12 +40,13 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/logar")
-	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> user) {
+	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> user) 
+	{
 		return usuarioService.autenticarUsuario(user)
 			.map(resposta -> ResponseEntity.ok(resposta))
 			.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
-	
+
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
 
@@ -51,7 +54,7 @@ public class UsuarioController {
 			.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
 			.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
-	
+
 	@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
 		return usuarioService.atualizarUsuario(usuario)
