@@ -1,4 +1,4 @@
-package blogpessoal.model;
+package com.br.blogpessoal.model;
 
 import java.util.List;
 
@@ -10,38 +10,39 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table (name = "tb_usuario")
+@Table(name = "tb_usuarios")
 public class Usuario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@NotNull
-	@Size(min=2,max=100)
+
+	@NotNull(message = "O atributo Nome é Obrigatório!")
 	private String nome;
-	
-	@NotNull
-	@Email(message = "O Email deve ser válido")
-	@Size(min=5,max=100)
+
+	@NotNull(message = "O atributo Usuário é Obrigatório!")
+	@Email(message = "O atributo Usuário deve ser um email válido!")
 	private String usuario;
-	
-	@NotNull
-	@Size(min=5, message ="A senha deve conter no mínimo 8 caracteres" )
+
+	@NotBlank(message = "O atributo Senha é Obrigatório!")
+	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
 	private String senha;
-	
+
 	private String foto;
-	
+
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
 
+	
+	// Getters e Setters
 	public long getId() {
 		return id;
 	}

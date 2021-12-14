@@ -1,15 +1,18 @@
-package blogpessoal.service;
+package com.br.blogpessoal.service;
 
 import java.nio.charset.Charset;
-import java.util.Base64;
 import java.util.Optional;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import blogpessoal.model.Usuario;
-import blogpessoal.repository.UsuarioRepository;
+import com.br.blogpessoal.model.Usuario;
+import com.br.blogpessoal.model.UsuarioLogin;
+import com.br.blogpessoal.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
@@ -31,16 +34,21 @@ public class UsuarioService {
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 
 		
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent()) {
+		if(usuarioRepository.findById(usuario.getId()).isPresent()) {
+			
+			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
+			
+			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId()))
+				throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 			
 			usuario.setSenha(criptografarSenha(usuario.getSenha()));
-			
-			return Optional.of(usuarioRepository.save(usuario));
+
+			return Optional.ofNullable(usuarioRepository.save(usuario));
 			
 		}
-			
-		return Optional.empty();
-
+			return Optional.empty();
+	
 	}	
 
 	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
@@ -57,10 +65,8 @@ public class UsuarioService {
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
 
 				return usuarioLogin;
-
 			}
 		}	
-		
 		return Optional.empty();
 		
 	}
@@ -85,8 +91,8 @@ public class UsuarioService {
 
 		String token = usuario + ":" + senha;
 		byte[] tokenBase64 = Base64.encodeBase64(token.getBytes(Charset.forName("US-ASCII")));
+		
 		return "Basic " + new String(tokenBase64);
-
 	}
 
 }

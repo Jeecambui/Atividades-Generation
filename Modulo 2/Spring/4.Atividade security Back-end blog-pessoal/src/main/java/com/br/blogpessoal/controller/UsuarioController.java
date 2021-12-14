@@ -1,6 +1,7 @@
-package blogpessoal.controller;
+package com.br.blogpessoal.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import blogpessoal.model.Tema;
-import blogpessoal.model.Usuario;
-import blogpessoal.repository.UsuarioRepository;
-import blogpessoal.service.UsuarioService;
+import com.br.blogpessoal.model.Usuario;
+import com.br.blogpessoal.model.UsuarioLogin;
+import com.br.blogpessoal.repository.UsuarioRepository;
+import com.br.blogpessoal.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -26,39 +27,39 @@ import blogpessoal.service.UsuarioService;
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioService usuarioService; // tem que checar o ID e o usuario FOCAR NA SERVICE E CONTROLLER
+	private UsuarioService usuarioService;
 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
 	@GetMapping("/all")
-	public ResponseEntity<List<Usuario>> getAll() {
-
+	public ResponseEntity <List<Usuario>> getAll(){
+		
 		return ResponseEntity.ok(usuarioRepository.findAll());
-
+		
 	}
-
+	
 	@PostMapping("/logar")
-	public ResponseEntity<UsuarioLogin> login(@Valid @RequestBody Usuario usuario) {
-
-		return usuarioService.autenticarUsuario(usuarioLogin)
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-		// Metodo para Logar
+	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> user) 
+	{
+		return usuarioService.autenticarUsuario(user)
+			.map(resposta -> ResponseEntity.ok(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
+
 		return usuarioService.cadastrarUsuario(usuario)
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
-		// Metodo para Cadastro
+			.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
 
 	@PutMapping("/atualizar")
-	public ResponseEntity<Usuario> puUsuario(@RequestBody Usuario usuario) {
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
 		return usuarioService.atualizarUsuario(usuario)
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-
-		// Metodo para Alteração do Cadastro
+			.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
 }

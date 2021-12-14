@@ -1,11 +1,11 @@
-package blogpessoal.repository;
+package com.br.blogpessoal.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import blogpessoal.model.Postagem;
+import com.br.blogpessoal.model.Postagem;
 
 @Repository
 public interface PostagemRepository extends JpaRepository<Postagem, Long>{	

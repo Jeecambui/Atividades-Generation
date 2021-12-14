@@ -1,4 +1,4 @@
-package blogpessoal.model;
+package com.br.blogpessoal.model;
 
 import java.util.List;
 
