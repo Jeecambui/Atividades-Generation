@@ -32,13 +32,12 @@ public class TemaController {
 
 		// select * from tb_postagens; seleciona a tabela inteira
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity <Tema> getById(@PathVariable Long id) { 
+	public ResponseEntity<Tema> getById(@PathVariable long id) {
 		return temaRepository.findById(id)
-				.map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
-
+			.map(respostaTema -> ResponseEntity.ok(respostaTema))
+			.orElse(ResponseEntity.notFound().build());
 		// select * from tb_temas where id = id; seleciona um tema só
 	}
 
@@ -57,7 +56,7 @@ public class TemaController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Tema> puTema(@RequestBody Tema tema)
+	public ResponseEntity<Tema> putTema(@RequestBody Tema tema)
 	{
 		return temaRepository.findById(tema.getId())
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(temaRepository.save(tema)))
