@@ -1,6 +1,9 @@
 package Farmacia.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,78 +19,86 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Farmacia.model.produto;
+import Farmacia.repository.categoriaRepository;
 import Farmacia.repository.produtoRepository;
 
 @RestController
 @RequestMapping("/produtos")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class produtoController {
+
 	@Autowired
 	private produtoRepository produtoRepository;
+	
+	@Autowired
+	private categoriaRepository categoriaRepository;
 
 	@GetMapping
-	public ResponseEntity<List<produto>> getAll() {
+	public ResponseEntity<List<produto>> getAll(){ 
 		return ResponseEntity.ok(produtoRepository.findAll());
-
-		// select * from tb_produto; seleciona a tabela inteira
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity <produto> getById(@PathVariable Long id) { 
+	public ResponseEntity<produto> getById(@PathVariable long id){
 		return produtoRepository.findById(id)
-				.map(resp -> ResponseEntity.ok(resp))
+			.map(resp -> ResponseEntity.ok(resp))
+			.orElse(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<List<produto>> getByTitulo(@PathVariable String nome){
+		return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
+	}
+	
+	@PostMapping 
+	public ResponseEntity<produto> postProduto(@RequestBody produto produto){ 
+		if (categoriaRepository.existsById(produto.getCategoria().getId()))
+			return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
+			
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping
+	public ResponseEntity<produto> putProduto(@Valid @RequestBody produto produto) {
+					
+		return produtoRepository.findById(produto.getId())
+				.map(resposta -> {
+					return ResponseEntity.ok().body(produtoRepository.save(produto));
+				})
 				.orElse(ResponseEntity.notFound().build());
 
-		// select * from tb_produto where id = id;
 	}
 
-	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<produto>> getByNome(@PathVariable String nome) {
-		return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
-
-		// select * from tb_produto where nome like "%nome%";
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteProduto(@PathVariable long id) {
+		
+		return produtoRepository.findById(id)
+				.map(resposta -> {
+					produtoRepository.deleteById(id);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+				})
+				.orElse(ResponseEntity.notFound().build());
 	}
+	
+	// Consulta por nome ou laboratório
+	
+	@GetMapping("/nome/{nome}/oulaboratorio/{laboratorio}")
+	public ResponseEntity<List<produto>> getByNomeOuLaboratorio(@PathVariable String nome, @PathVariable String laboratorio){
+		return ResponseEntity.ok(produtoRepository.findByNomeOrLaboratorio(nome, laboratorio));
+	}
+	
+	// Consulta por nome e laboratório
 	
 	@GetMapping("/nome/{nome}/elaboratorio/{laboratorio}")
 	public ResponseEntity<List<produto>> getByNomeELaboratorio(@PathVariable String nome, @PathVariable String laboratorio){
-		return ResponseEntity.ok(produtoRepository.findAllByNomeAndLaboratorioContainingIgnoreCase(nome, laboratorio));
-	
-		// select * from tb_produto where nome like "%nome%" 
-		//								  and laboratorio like "%laboratorio%";
+		return ResponseEntity.ok(produtoRepository.findByNomeAndLaboratorio(nome, laboratorio));
 	}
 	
-	@GetMapping("/nome/{nome}")
-	public ResponseEntity<List<produto>> getByDescricao(@PathVariable String nome) {
-		return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
-
-		// select * from tb_produto where nome like "%nome%";
-	}
-
-	@PostMapping
-	public ResponseEntity<produto> postTema(@RequestBody produto produto)
-	{
-		return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepository.save(produto));
-	}
-
-	@PutMapping
-	public ResponseEntity<produto> putProduto(@RequestBody produto produto)
-	{
-		return produtoRepository.findById(produto.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-				
-		// Metodo para Alteração
-	}
+	// Consulta por preço entre dois valores (Between)
 	
-	@DeleteMapping(path = {"/{id}"}) //dúvida por que nao utilizou o map e orElse igual em PostagemController
-	public ResponseEntity<?> deleteProduto (@PathVariable long id) 
-	{
-			return produtoRepository.findById(id)
-					.map(record-> 
-					{
-						produtoRepository.deleteById(id);
-						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-					})
-					.orElse(ResponseEntity.notFound().build());
+	@GetMapping("/preco_inicial/{inicio}/preco_final/{fim}")
+	public ResponseEntity<List<produto>> getByPrecoEntre(@PathVariable BigDecimal inicio, @PathVariable BigDecimal fim){
+		return ResponseEntity.ok(produtoRepository.buscarProdutosEntre(inicio, fim));
 	}
+
 }

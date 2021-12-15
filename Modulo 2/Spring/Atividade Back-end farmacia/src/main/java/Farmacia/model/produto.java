@@ -10,32 +10,34 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "tb_produto")
 public class produto {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotBlank(message = "o campo produto não pode estar em branco.")
-	@NotNull(message = "O produto deve conter caracteres")
-	private String produto;
-
-	@NotBlank(message = "o campo descrição não pode estar em branco.")
-	@NotNull(message = "A descrição deve conter caracteres")
+	
+	@NotBlank(message="Nome é obrigatório!")
+	private String nome;
+	
+	@NotBlank(message="Descrição é obrigatório!")
 	private String descricao;
 
-	@NotNull(message = "a quantidade deve conter um número inteiro")
 	private int quantidade;
 
-	@NotNull(message = "O preço deve conter caracteres")
-	private BigDecimal preco;
+	private String laboratorio;
 
-	@NotBlank(message = "A foto não pode estar em branco.")
-	@NotNull(message = "A foto deve conter uma URL")
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@NotNull(message="Preço é obrigatório!")
+	@Positive(message = "Digite um valor maior do que zero")
+	private BigDecimal preco;
+	
 	private String foto;
 
 	@ManyToOne
@@ -50,12 +52,12 @@ public class produto {
 		this.id = id;
 	}
 
-	public String getProduto() {
-		return produto;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setProduto(String produto) {
-		this.produto = produto;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getDescricao() {
@@ -72,6 +74,14 @@ public class produto {
 
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public String getLaboratorio() {
+		return laboratorio;
+	}
+
+	public void setLaboratorio(String laboratorio) {
+		this.laboratorio = laboratorio;
 	}
 
 	public BigDecimal getPreco() {
@@ -97,4 +107,5 @@ public class produto {
 	public void setCategoria(categoria categoria) {
 		this.categoria = categoria;
 	}
+	
 }

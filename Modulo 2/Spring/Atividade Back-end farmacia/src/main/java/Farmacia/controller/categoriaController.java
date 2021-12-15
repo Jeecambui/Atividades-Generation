@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Farmacia.model.categoria;
-import Farmacia.model.produto;
 import Farmacia.repository.categoriaRepository;
 
 @RestController
@@ -37,7 +36,7 @@ public class categoriaController {
 		}
 
 		@GetMapping("/{id}")
-		public ResponseEntity<categoria> getById(@PathVariable long id) {
+		public ResponseEntity<categoria> getById(@PathVariable Long id) {
 			return categoriaRepository.findById(id)
 					.map(resp -> ResponseEntity.ok(resp))
 					.orElse(ResponseEntity.notFound().build());
@@ -58,15 +57,18 @@ public class categoriaController {
 		}
 		
 		@PutMapping
-		public ResponseEntity<categoria> puTema(@RequestBody categoria categoria)
-		{
-			return categoriaRepository.findById(categoria.getId()) //nao sei o erro
-					.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(categoriaRepository.save(categoria)))
-					.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		public ResponseEntity<categoria> putCategoria(@Valid @RequestBody categoria categoria) {
+						
+			return categoriaRepository.findById(categoria.getId())
+					.map(resposta -> {
+						return ResponseEntity.ok().body(categoriaRepository.save(categoria));
+					})
+					.orElse(ResponseEntity.notFound().build());
+
 		}
-		
+
 		@DeleteMapping("/{id}")
-		public ResponseEntity<?> deleteCategoria(@PathVariable long id) {
+		public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
 			
 			return categoriaRepository.findById(id)
 					.map(resposta -> {
@@ -76,4 +78,3 @@ public class categoriaController {
 					.orElse(ResponseEntity.notFound().build());
 		}
 	}
-
