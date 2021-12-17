@@ -9,10 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "tb_usuarios")
@@ -25,8 +28,11 @@ public class Usuario {
 	@NotNull(message = "O atributo nome é obrigatório")
 	private String nome;
 	
-	@NotNull(message = "O atributo usuário é obrigatório")
+	@Schema(example = "email@email.com.br")
+	@NotNull(message = "O atributo Usuário é Obrigatório!")
+	@Email(message = "O atributo Usuário deve ser um email válido!")
 	private String usuario;
+
 	
 	@NotNull(message = "O atributo senha é obrigatório")
 	@Size(min = 8, message = "O atributo senha deve ter no mínimo 8 caracteres")
