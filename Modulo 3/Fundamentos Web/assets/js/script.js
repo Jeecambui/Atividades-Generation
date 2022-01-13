@@ -40,5 +40,9 @@ function validaEmail(){
         txtEmail.innerHTML = 'E-mail Válido'
         txtEmail.style.color = 'green'
     }
-
 }
+
+const checkbox = document.getElementById('checkbox');
+checkbox.addEventListener('change', () =>{
+    // trocar o tema do site
+    document.body.classList.toggle('dark');
