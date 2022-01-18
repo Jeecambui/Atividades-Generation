@@ -2,15 +2,22 @@ import React from 'react';
 import Footer from './components/estaticos/footer/Footer';
 import Navbar from './components/estaticos/navbar/Navbar';
 import Home from './paginas/home/Home';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
 
 function App() {
   return (
     <>
-      <Navbar />
-      <Home />
-      <Footer />
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route exact path= "/">
+            <Home />
+          </Route>
+        </Switch>
+        <Footer />
+      </Router>
     </>
   );
 }
