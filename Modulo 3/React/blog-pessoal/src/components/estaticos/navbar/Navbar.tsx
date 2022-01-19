@@ -1,8 +1,7 @@
 import React from 'react';
 import { AppBar, Box, Toolbar, Typography} from '@material-ui/core';
-
-
-
+import { Link } from 'react-router-dom'
+import './Navbar.css'
 
 function Navbar (){
     return(
@@ -17,7 +16,7 @@ function Navbar (){
                 </Box>
 
                 <Box display="flex" justifyContent="start">
-                    <Box mx={1} style={{ cursor: "pointer" }}>
+                    <Box mx={1} className='cursor'>
                         <Typography variant="h6" color="inherit">
                             home
                         </Typography>
@@ -25,7 +24,7 @@ function Navbar (){
                 </Box>
 
                 <Box display="flex" justifyContent="start">
-                    <Box mx={1} style={{ cursor: "pointer" }}>
+                    <Box mx={1} className='cursor'>
                         <Typography variant="h6" color="inherit">
                             postagens
                         </Typography>
@@ -33,7 +32,7 @@ function Navbar (){
                 </Box>
 
                 <Box display="flex" justifyContent="start">
-                    <Box mx={1} style={{ cursor: "pointer" }}>
+                    <Box mx={1} className='cursor'>
                         <Typography variant="h6" color="inherit">
                             temas
                         </Typography>
@@ -41,20 +40,24 @@ function Navbar (){
                 </Box>
 
                 <Box display="flex" justifyContent="start">
-                    <Box mx={1} style={{ cursor: "pointer" }}>
+                    <Box mx={1} className='cursor'>
                         <Typography variant="h6" color="inherit">
                             cadastrar tema
                         </Typography>
                     </Box>
                 </Box>
 
-                <Box display="flex" justifyContent="start">
-                    <Box mx={1} style={{ cursor: "pointer" }}>
-                        <Typography variant="h6" color="inherit">
-                            logout
-                        </Typography>
+                <Link to='/login' className='text-decorator-none'>
+                    <Box display="flex" justifyContent="start">
+                        <Box mx={1} className='cursor'>
+                            <Typography variant="h6" color="inherit">
+                                logout
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
+                </Link>
+
+
             </Toolbar>   
 
             </AppBar>
