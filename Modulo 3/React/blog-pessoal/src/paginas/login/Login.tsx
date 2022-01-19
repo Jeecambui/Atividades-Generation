@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Box, Typography, TextField, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import './Login.css'
 
 function Login(){
     return(
@@ -8,7 +9,7 @@ function Login(){
             <Grid alignItems='center' xs={6}>
                 <Box paddingX= {20}>
                     <form>
-                        <Typography variant="h3" gutterBottom color ='textPrimary' component='h3' align='center' style={{fontWeight: 'bold'}}>Entrar</Typography>
+                        <Typography variant="h3" gutterBottom color ='textPrimary' component='h3' align='center' className='textos1'>Entrar</Typography>
 
                         <TextField id='usuario' label='usuario' variant='outlined' name='usuario' margin='normal' fullWidth />
                         <TextField id='senha' label='senha' variant='outlined' name='usuario' margin='normal' fullWidth type='password' />
@@ -26,16 +27,13 @@ function Login(){
                         <Typography variant='subtitle1' gutterBottom align='center'>Não tem uma conta?</Typography>
                     </Box>
 
-                    <Typography variant='subtitle1' gutterBottom align='center' style={{fontWeight: 'bold'}}>Cadastre-se</Typography>
+                    <Typography variant='subtitle1' gutterBottom align='center' className='textos1'>Cadastre-se</Typography>
                 </Box>
 
                 </Box>
             </Grid>
 
-            <Grid xs={6} style={{
-                backgroundImage: `url(https://i.imgur.com/d5bMdDJ.jpg)`,
-                backgroundRepeat: 'no-repeat', width: '100vh', minHeight: '100vh', backgroundSize: 'cover',backgroundPosition: 'center'
-            }}>
+            <Grid xs={6} className='imagem'>
                 
             </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-box1{
+.box1{
     background-color: #3F51B5;
     height: 120px;
 }
@@ -9,10 +9,10 @@ box1{
 }
 
 .redes{
-    font-size: 60px;
-    color: white !important;
+    font-size: 60px !important;
+    color: white;
 }
 
 .textos{
-    color: white !important;
+    color: white;
 }
