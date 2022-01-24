@@ -4,6 +4,8 @@ import Navbar from './components/estaticos/navbar/Navbar';
 import CadastroUsuario from './paginas/cadastroUsuario/CadastroUsuario';
 import Home from './paginas/home/Home';
 import Login from './paginas/login/Login';
+import ListaTema from './components/temas/listatema/ListaTema';
+import ListaPostagem from './components/postagens/listapostagem/ListaPostagem';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
@@ -30,6 +32,14 @@ function App() {
 
             <Route path= '/cadastrousuario'>
               <CadastroUsuario />
+            </Route>
+
+            <Route path= '/temas'>
+              <ListaTema />
+            </Route>
+
+            <Route path= '/posts'>
+              <ListaPostagem />
             </Route>
 
             </div>
