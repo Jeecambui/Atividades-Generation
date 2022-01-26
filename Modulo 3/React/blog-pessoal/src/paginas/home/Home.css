@@ -3,7 +3,7 @@
 }
 
 .titulo{
-    color: white !important; 
+    color: white !important;
     font-weight: bold !important;
 }
 
@@ -14,5 +14,5 @@
 }
 
 .postagens{
-    background-color: "white"
+    background-color: white;
 }
